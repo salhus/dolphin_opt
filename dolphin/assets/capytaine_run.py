@@ -96,26 +96,14 @@ solver = BEMSolver()
 # save capytaine data
 
 
-import pandas as pd
-import xarray as xr
 
-def convert_categoricals_to_strings(ds: xr.Dataset) -> xr.Dataset:
-    """Convert all CategoricalDtype data (in variables and coordinates) to string dtype."""
-    for var_name in ds.variables:
-        var = ds[var_name]
-        if isinstance(var.dtype, pd.CategoricalDtype) or isinstance(var.values, pd.Categorical):
-            ds[var_name] = (var.dims, var.values.astype(str))
-    
-    for coord_name in ds.coords:
-        coord = ds.coords[coord_name]
-        if isinstance(coord.dtype, pd.CategoricalDtype) or isinstance(coord.values, pd.Categorical):
-            ds.coords[coord_name] = (coord.dims, coord.values.astype(str))
-
-    return ds
 
 results = [solver.solve(pb) for pb in sorted(problems)]
 
 data = assemble_dataset(results)
+
+from helpers import convert_categoricals_to_strings
+
 data_cleaned = convert_categoricals_to_strings(separate_complex_values(data))
 
 data_cleaned.to_netcdf(
@@ -131,7 +119,7 @@ import xarray as xr
 Zi = impedance(data)
 Zi.name = 'impedance'
 RAO      =  rao(data)
-RAO.name            =  'RAO'
+RAO.name =  'RAO'
 data = xr.merge([data, Zi])
 data = xr.merge([data, RAO])
 

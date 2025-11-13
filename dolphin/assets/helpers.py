@@ -241,20 +241,30 @@ def export_mesh_to_obj(wec_obj, destination_folder, filename):
     print(f"obj file saved to {filepath}")
 
 
-def run_bemio():
-    """
-    Run the BEMIO MATLAB script to compute hydrodynamic coefficients.
-    This function assumes that the MATLAB script is set up to generate the necessary plots.
-    """
-    # Ensure the MATLAB engine is started and the script is run
-    try:
-        import matlab.engine
-        eng = matlab.engine.start_matlab()
-        eng.run('./hydroData/bemio.m', nargout=0)
-        eng.quit()
-    except Exception as e:
-        print(f"An error occurred while running BEMIO: {e}")
-    print("BEMIO calculations completed successfully.")
-# This function runs the BEMIO MATLAB script to compute hydrodynamic coefficients.
+import pandas as pd
+import xarray as xr
+
+def convert_categoricals_to_strings(ds: xr.Dataset) -> xr.Dataset:
+    """Convert all CategoricalDtype data (in variables and coordinates) to string dtype."""
+    for var_name in ds.variables:
+        var = ds[var_name]
+        if isinstance(var.dtype, pd.CategoricalDtype) or isinstance(var.values, pd.Categorical):
+            ds[var_name] = (var.dims, var.values.astype(str))
+    
+    for coord_name in ds.coords:
+        coord = ds.coords[coord_name]
+        if isinstance(coord.dtype, pd.CategoricalDtype) or isinstance(coord.values, pd.Categorical):
+            ds.coords[coord_name] = (coord.dims, coord.values.astype(str))
+
+    return ds
+
+
+
+def run_bemio(filename, resDir):
+    import matlab.engine
+    eng = matlab.engine.start_matlab()
+    eng.cd(resDir)
+    eng.bemio(filename, nargout=0)
+    eng.quit()
 
 
