@@ -1,0 +1,5 @@
+model_file: dolphin.model.yaml
+simulation_file: dolphin.simulation.yaml
+hydro_file: dolphin.hydro.yaml
+
+output_directory: ./outputs

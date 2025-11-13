@@ -1,0 +1,128 @@
+chrono-version: 9.0
+
+model:
+  name: f3of_dt3_model
+  angle_degrees: false
+
+  data_path:
+    type: RELATIVE
+    root: "."
+
+  bodies:
+
+  - name: body1
+    location: [0,0,-1.24]
+    mass: 4.469999977797268e+02
+    fixed: false
+    inertia:
+      moments: [876.375,  197.25, 679.875]
+      products: [0, 0, 0]
+    com:
+      location: [0, 0, 0]
+      orientation: [0, 0, 0]
+    visualization:
+        model_file: ./assets/geometry/flap_N1p24.obj
+
+  - name: body2
+    location: [0,0,-5.99]
+    mass: 4.004265813797201e+03
+    fixed: false
+    inertia:
+      moments: [37001.1253, 37001.1566,	307.969858]
+      products: [0, 0, 0]
+    com:
+      location: [0, 0, 0]
+      orientation: [0, 0, 0]
+    visualization:
+        model_file: ./assets/geometry/dolphin_N5p99.obj
+  - name: ground
+    location: [0, 0, -50.0]
+    mass: 999
+    fixed: true
+    inertia:
+      moments: [999, 999, 999]
+      products: [0, 0, 0]
+    com:
+      location: [0, 0, -50]
+      orientation: [0, 0, 0]
+
+  joints:
+
+  - name: hinge
+    type: REVOLUTE
+    body1: body1
+    body2: body2
+    location: [0.0, 0.0, 1.5]
+    axis: [0,1,0]
+
+  rsdas:
+  - name: PTO1
+    type: RSDA
+    body1: body1
+    body2: body2
+    location: [0.0, 0.0, 1.5]
+    axis: [0, 1, 0]
+    spring_coefficient: 0.5e4
+    damping_coefficient: 1.0e3
+    free_angle: 0.0
+
+  tsdas:
+    - name: moor1
+      type: TSDA
+      body1: body2
+      body2: ground
+      point1: [ 0,   0.0,     -2.0]
+      point2: [ 0,   15.0,   -50.0]
+      spring_coefficient: 0.5e4
+      damping_coefficient: 2e4
+      free_length: 51.3
+      visualization:
+        type: SPRING
+        radius: 0.8
+        resolution: 512
+        turns: 32
+
+    - name: moor2
+      type: TSDA
+      body1: body2
+      body2: ground
+      point1: [ 0,     0.0,     -2.0]
+      point2: [ 0,   -15.0,   -50.0]
+      spring_coefficient: 0.5e4
+      damping_coefficient: 2e4
+      free_length: 51.3
+      visualization:
+        type: SPRING
+        radius: 0.8
+        resolution: 512
+        turns: 32
+
+    # - name: moor3
+    #   type: TSDA
+    #   body1: body2
+    #   body2: ground
+    #   point1: [ 0,   0.0,     -2.0]
+    #   point2: [ 15.0,   0.0,   -50.0]
+    #   spring_coefficient: .1e4
+    #   damping_coefficient: 5e4
+    #   free_length: 51.3
+    #   visualization:
+    #     type: SPRING
+    #     radius: 0.8
+    #     resolution: 512
+    #     turns: 32
+
+    # - name: moor4
+    #   type: TSDA
+    #   body1: body2
+    #   body2: ground
+    #   point1: [ 0,   0.0,     -2.0]
+    #   point2: [ -15.0,   0.0,   -50.0]
+    #   spring_coefficient: .1e4
+    #   damping_coefficient: 5e4
+    #   free_length: 51.3
+    #   visualization:
+    #     type: SPRING
+    #     radius: 0.8
+    #     resolution: 512
+    #     turns: 32
