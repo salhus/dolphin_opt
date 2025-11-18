@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'assets'))
+# sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'assets'))
 
 from assets.generate_hydrodynamics import generate_hydrodynamics_poseidon
 

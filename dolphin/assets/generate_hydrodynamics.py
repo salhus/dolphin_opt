@@ -1,5 +1,5 @@
 import numpy as np
-from helpers import compute_volume
+from .helpers import compute_volume
 import pygmsh
 import time
 import os
@@ -16,7 +16,7 @@ import sys
 import vtk
 import matplotlib.pyplot
 import shutil
-from design_recipe.mesher import auv_mesh, flap_mesh
+from .design_recipe.mesher import auv_mesh, flap_mesh
 
 # Setup directories
 
@@ -134,7 +134,7 @@ def generate_hydrodynamics_poseidon(
     bodies.show()
 
 
-    from helpers import export_hydrostatics
+    from .helpers import export_hydrostatics
     export_hydrostatics(resDir, [auv_obj, 
                                  flap_left_obj, 
                                  flap_right_obj]) 
@@ -155,7 +155,7 @@ def generate_hydrodynamics_poseidon(
 
     data = assemble_dataset(results)
 
-    from helpers import convert_categoricals_to_strings
+    from .helpers import convert_categoricals_to_strings
 
     data_cleaned = convert_categoricals_to_strings(separate_complex_values(data))
 
@@ -198,7 +198,7 @@ def generate_hydrodynamics_poseidon(
 
     print('Capytaine runs were saved as a .mat file')
 
-    from helpers import run_bemio
+    from .helpers import run_bemio
 
     run_bemio(h5_filename, resDir)
 
