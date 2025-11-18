@@ -206,13 +206,7 @@ if __name__ == "__main__":
     generate_hydrodynamics_poseidon(
     auv_length  = 10,    # AUV Length
     auv_radius  = 1,     # AUV Radius
-    depth       = 3,     # Flap Depth (- z axis)
-    width       = 2,      # Flap Width (+ y-axis)
+    depth       = 2,     # Flap Depth (- z axis)
+    width       = 3,      # Flap Width (+ y-axis)
     thickness   = 0.1, # Flap Thickness (+- x-axis)
     resolution  = 0.1)
-
-    
-    
-
-
-
