@@ -17,7 +17,7 @@ import vtk
 import matplotlib.pyplot
 import shutil
 from .design_recipe.mesher import auv_mesh, flap_mesh
-
+from meshmagick import mmio
 # Setup directories
 
 print('Current working directory:', os.getcwd())
@@ -25,7 +25,8 @@ print('Current working directory:', os.getcwd())
 # Get the absolute path to the existing design_recipe folder
 design_recipe_folder = os.path.abspath(
     os.path.join(os.path.dirname(__file__), 'design_recipe'))
-
+geometry_folder = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), 'geometry'))
 
 def generate_hydrodynamics_poseidon(
     auv_length  = 10,    # AUV Length
@@ -35,25 +36,30 @@ def generate_hydrodynamics_poseidon(
     thickness   = 0.1, # Flap Thickness (+- x-axis)
     resolution  = 0.1):
 
-    h5_filename = f"poseidon_L{auv_length}_R{auv_radius}_flap{width}x{depth}"
+    h5_filename         = f"poseidon_L{auv_length}_R{auv_radius}_flap{width}x{depth}"
+    auv_filename        = f"auv_mesh_L{auv_length}_R{auv_radius}"
+    flap_left_filename  = f"flap_left_WD{width}x{depth}"
+    flap_right_filename = f"flap_right_WD{width}x{depth}"
+
+
     # auv_mesh(Length, radius, resolution, name , file_location)
 
     auv_mesh(auv_length, 
              auv_radius, 
-             resolution, 'auv_mesh' , 
-             design_recipe_folder)
+             resolution, auv_filename, 
+             geometry_folder)
 
     # flap_mesh(corner, thickness, width, depth, resolution, name , file_location)
 
     flap_mesh([-0.5*thickness, auv_radius, 0], 
             thickness, width, -depth, 
-            5.0*resolution, 'flap_left' , 
-            design_recipe_folder)
+            5.0*resolution, flap_left_filename, 
+            geometry_folder)
 
     flap_mesh([-0.5*thickness, -(auv_radius+width), 0], 
             thickness, width, -depth, 
-            5.0*resolution, 'flap_right' , 
-            design_recipe_folder)
+            5.0*resolution, flap_right_filename, 
+            geometry_folder)
     
 
     resDir = os.path.abspath(
@@ -63,19 +69,20 @@ def generate_hydrodynamics_poseidon(
 
     auv_mesh_file  = os.path.abspath(
              os.path.join(os.path.dirname(__file__), 
-                          'design_recipe',
-                          'auv_mesh.stl'))
+                          'geometry',
+                          f"{auv_filename}.stl"))
+  
     
     flap_left_file = os.path.abspath(
              os.path.join(os.path.dirname(__file__), 
-                          'design_recipe',
-                          'flap_left.stl'))
+                          'geometry',
+                          f"{flap_left_filename}.stl"))
+    
 
     flap_right_file = os.path.abspath(
              os.path.join(os.path.dirname(__file__), 
-                          'design_recipe',
-                          'flap_right.stl'))
-    
+                          'geometry',
+                          f"{flap_right_filename}.stl"))
 
     #######################
     # Initialize bodies and wave frequency range
@@ -92,7 +99,7 @@ def generate_hydrodynamics_poseidon(
     auv_mesh_body.keep_immersed_part()
     lid_auv_mesh_body = auv_mesh_body.generate_lid()
     auv_obj = FloatingBody(auv_mesh_body, lid_mesh = lid_auv_mesh_body)
-    auv_obj.center_of_mass = auv_obj.center_of_buoyancy - np.array([0, 0, -0.25 * auv_length])
+    auv_obj.center_of_mass = auv_obj.center_of_buoyancy - np.array([0, 0, 0.25 * auv_length])
     auv_obj.rotation_center= auv_obj.center_of_mass
     auv_obj.add_all_rigid_body_dofs()
     auv_obj.compute_rigid_body_inertia()
@@ -108,7 +115,7 @@ def generate_hydrodynamics_poseidon(
     lid_flap_left_mesh_body = flap_left_mesh_body.generate_lid()
     flap_left_obj = FloatingBody(flap_left_mesh_body, 
                                  lid_mesh = lid_flap_left_mesh_body)
-    flap_left_obj.center_of_mass = flap_left_obj.center_of_buoyancy - np.array([0, 0, -0.25 * depth])
+    flap_left_obj.center_of_mass = flap_left_obj.center_of_buoyancy - np.array([0, 0, 0.25 * depth])
     flap_left_obj.rotation_center= flap_left_obj.center_of_mass
     flap_left_obj.add_all_rigid_body_dofs()
     flap_left_obj.compute_rigid_body_inertia()
@@ -119,7 +126,7 @@ def generate_hydrodynamics_poseidon(
     lid_flap_right_mesh_body = flap_right_mesh_body.generate_lid()
     flap_right_obj = FloatingBody(flap_right_mesh_body, 
                                  lid_mesh = lid_flap_right_mesh_body)
-    flap_right_obj.center_of_mass = flap_right_obj.center_of_buoyancy - np.array([0, 0, -0.25 * depth])
+    flap_right_obj.center_of_mass = flap_right_obj.center_of_buoyancy - np.array([0, 0, 0.25 * depth])
     flap_right_obj.rotation_center= flap_right_obj.center_of_mass
     flap_right_obj.add_all_rigid_body_dofs()
     flap_right_obj.compute_rigid_body_inertia()

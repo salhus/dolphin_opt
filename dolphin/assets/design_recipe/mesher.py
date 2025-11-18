@@ -1,6 +1,7 @@
 import pygmsh
 import numpy as np
 import os
+from meshmagick import mmio
 
 def auv_mesh(Length, radius, resolution, name , file_location):
     ""
@@ -23,6 +24,9 @@ def auv_mesh(Length, radius, resolution, name , file_location):
         # Combine file_location and name for the output file
         output_path = os.path.join(file_location, f"{name}.stl")
         auv_mesh.write(output_path)
+    [v_auv, f_auv] = mmio.load_STL(output_path)
+    mmio.write_OBJ(os.path.join(file_location, f"{name}.obj"), v_auv, f_auv)
+    
 
 def flap_mesh(corner, thickness, width, depth, resolution, name , file_location):
     ""
@@ -34,5 +38,8 @@ def flap_mesh(corner, thickness, width, depth, resolution, name , file_location)
         # Combine file_location and name for the output file
         output_path = os.path.join(file_location, f"{name}.stl")
         flap_mesh.write(output_path)
+    [v_flap, f_flap] = mmio.load_STL(output_path)
+    mmio.write_OBJ(os.path.join(file_location, f"{name}.obj"), v_flap, f_flap)
+    
 
 

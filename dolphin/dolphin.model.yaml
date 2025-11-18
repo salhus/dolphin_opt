@@ -1,7 +1,7 @@
 chrono-version: 9.0
 
 model:
-  name: f3of_dt3_model
+  name: dolphin_opt
   angle_degrees: false
 
   data_path:
@@ -11,30 +11,45 @@ model:
   bodies:
 
   - name: body1
-    location: [0,0,-1.24]
-    mass: 4.469999977797268e+02
+    location: [0, 0, 0]
+    mass: 2.896449242653072e+04
     fixed: false
     inertia:
-      moments: [876.375,  197.25, 679.875]
+      moments: [4.617092374535835e+05,  4.616541125688138e+05, 1.150470818971075e+04]
       products: [0, 0, 0]
     com:
-      location: [0, 0, 0]
+      location: [6.000e-3, -3.000e-3, -7.787e+0]
       orientation: [0, 0, 0]
     visualization:
-        model_file: ./assets/geometry/flap_N1p24.obj
+        model_file: ./assets/geometry/auv_mesh_L10_R1.obj
 
   - name: body2
-    location: [0,0,-5.99]
-    mass: 4.004265813797201e+03
+    location: [0, 0, 0]
+    mass: 6.000000089406967e+02
     fixed: false
     inertia:
-      moments: [37001.1253, 37001.1566,	307.969858]
-      products: [0, 0, 0]
+      moments: [9.781625298532427e+02, 7.829982968371633e+02,	1.957197885964702e+02]
+      products: [0,0,0]
     com:
-      location: [0, 0, 0]
+      location: [0.000e+0, 2.000e+0, -2.250e+0]
       orientation: [0, 0, 0]
     visualization:
-        model_file: ./assets/geometry/dolphin_N5p99.obj
+        model_file: ./assets/geometry/flap_left_WD2x3.obj
+
+  - name: body3
+    location: [0, 0, 0]
+    mass: 6.000000089406967e+02
+    fixed: false
+    inertia:
+      moments: [9.781625298532427e+02, 7.829982968371633e+02,	1.957197885964702e+02]
+      products: [0, 0, 0]
+    com:
+      location: [0.000e+0, -2.000e+0, -2.250e+0]
+      orientation: [0, 0, 0]
+    visualization:
+        model_file: ./assets/geometry/flap_right_WD2x3.obj
+
+
   - name: ground
     location: [0, 0, -50.0]
     mass: 999
@@ -52,24 +67,39 @@ model:
     type: REVOLUTE
     body1: body1
     body2: body2
-    location: [0.0, 0.0, 1.5]
+    location: [0.0, 2.0, 1.5]
     axis: [0,1,0]
+  - name: hinge
+    type: REVOLUTE
+    body1: body2
+    body2: body3
+    location: [0.0, -2.0, 1.5]
+    axis: [0,-1,0]
 
-  rsdas:
-  - name: PTO1
-    type: RSDA
-    body1: body1
-    body2: body2
-    location: [0.0, 0.0, 1.5]
-    axis: [0, 1, 0]
-    spring_coefficient: 0.5e4
-    damping_coefficient: 1.0e3
-    free_angle: 0.0
+  # rsdas:
+  # - name: PTO_left
+  #   type: RSDA
+  #   body1: body1
+  #   body2: body2
+  #   location: [0.0, 0.0, 1.5]
+  #   axis: [0, 1, 0]
+  #   spring_coefficient: 0.5e4
+  #   damping_coefficient: 1.0e3
+  #   free_angle: 0.0
+  # - name: PTO_right
+  #   type: RSDA
+  #   body1: body1
+  #   body2: body3
+  #   location: [0.0, 0.0, 1.5]
+  #   axis: [0, 1, 0]
+  #   spring_coefficient: 0.5e4
+  #   damping_coefficient: 1.0e3
+  #   free_angle: 0.0
 
   tsdas:
     - name: moor1
       type: TSDA
-      body1: body2
+      body1: body1
       body2: ground
       point1: [ 0,   0.0,     -2.0]
       point2: [ 0,   15.0,   -50.0]
@@ -84,7 +114,7 @@ model:
 
     - name: moor2
       type: TSDA
-      body1: body2
+      body1: body1
       body2: ground
       point1: [ 0,     0.0,     -2.0]
       point2: [ 0,   -15.0,   -50.0]
@@ -96,33 +126,3 @@ model:
         radius: 0.8
         resolution: 512
         turns: 32
-
-    # - name: moor3
-    #   type: TSDA
-    #   body1: body2
-    #   body2: ground
-    #   point1: [ 0,   0.0,     -2.0]
-    #   point2: [ 15.0,   0.0,   -50.0]
-    #   spring_coefficient: .1e4
-    #   damping_coefficient: 5e4
-    #   free_length: 51.3
-    #   visualization:
-    #     type: SPRING
-    #     radius: 0.8
-    #     resolution: 512
-    #     turns: 32
-
-    # - name: moor4
-    #   type: TSDA
-    #   body1: body2
-    #   body2: ground
-    #   point1: [ 0,   0.0,     -2.0]
-    #   point2: [ -15.0,   0.0,   -50.0]
-    #   spring_coefficient: .1e4
-    #   damping_coefficient: 5e4
-    #   free_length: 51.3
-    #   visualization:
-    #     type: SPRING
-    #     radius: 0.8
-    #     resolution: 512
-    #     turns: 32

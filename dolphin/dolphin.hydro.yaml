@@ -1,10 +1,11 @@
 hydrodynamics:
   bodies:
     - name: body1
-      h5_file: ./assets/hydroData/poseidon.h5
+      h5_file: ./assets/hydroData/poseidon_L10_R1_flap2x3.h5
     - name: body2
-      h5_file: ./assets/hydroData/poseidon.h5
-
+      h5_file: ./assets/hydroData/poseidon_L10_R1_flap2x3.h5
+    - name: body3
+      h5_file: ./assets/hydroData/poseidon_L10_R1_flap2x3.h5
 
   waves:
     type: regular
