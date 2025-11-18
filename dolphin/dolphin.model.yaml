@@ -71,30 +71,30 @@ model:
     axis: [0,1,0]
   - name: hinge
     type: REVOLUTE
-    body1: body2
+    body1: body1
     body2: body3
     location: [0.0, -2.0, 1.5]
     axis: [0,-1,0]
 
-  # rsdas:
-  # - name: PTO_left
-  #   type: RSDA
-  #   body1: body1
-  #   body2: body2
-  #   location: [0.0, 0.0, 1.5]
-  #   axis: [0, 1, 0]
-  #   spring_coefficient: 0.5e4
-  #   damping_coefficient: 1.0e3
-  #   free_angle: 0.0
-  # - name: PTO_right
-  #   type: RSDA
-  #   body1: body1
-  #   body2: body3
-  #   location: [0.0, 0.0, 1.5]
-  #   axis: [0, 1, 0]
-  #   spring_coefficient: 0.5e4
-  #   damping_coefficient: 1.0e3
-  #   free_angle: 0.0
+  rsdas:
+  - name: PTO_left
+    type: RSDA
+    body1: body1
+    body2: body2
+    location: [0.0, 0.0, 1.5]
+    axis: [0, 1, 0]
+    spring_coefficient: 0.5e4
+    damping_coefficient: 1.0e3
+    free_angle: 0.0
+  - name: PTO_right
+    type: RSDA
+    body1: body1
+    body2: body3
+    location: [0.0, 0.0, 1.5]
+    axis: [0, 1, 0]
+    spring_coefficient: 0.5e4
+    damping_coefficient: 1.0e3
+    free_angle: 0.0
 
   tsdas:
     - name: moor1
