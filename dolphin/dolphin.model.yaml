@@ -74,7 +74,7 @@ model:
     body1: body1
     body2: body3
     location: [0.0, -2.0, 1.5]
-    axis: [0,-1,0]
+    axis: [0,1,0]
 
   rsdas:
   - name: PTO_left
